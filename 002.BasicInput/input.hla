@@ -1,0 +1,13 @@
+program my_program;
+#include ("stdlib.hhf")
+
+static
+    ConstValue:        int32 := 5;
+    EmptyValue:        int32;
+
+begin my_program;
+    stdout.put("This is the const value: ", ConstValue, nl);
+    stdout.put("Type an input: ", nl);
+    stdin.get(EmptyValue);
+    stdout.put("Value now is ", EmptyValue, nl);
+end my_program;

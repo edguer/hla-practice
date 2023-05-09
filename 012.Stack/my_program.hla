@@ -1,0 +1,37 @@
+program my_program;
+#include ("stdlib.hhf")
+
+begin my_program;
+    mov(1, eax);
+    mov(2, ebx);
+    mov(3, ecx);
+
+    // Push and them clean registers
+    push(eax);
+    push(ebx);
+    push(ecx);
+    mov(0, eax);
+    mov(0, ebx);
+    mov(0, ecx);
+
+    // Suppose we need to peek at eax at the stack without popping it
+    // For that, we use addressing mode
+    mov([esp + 8], edx);
+    stdout.put("Current eax value at the stack: ", edx, nl);
+
+    // Now lets try changing a value directly into the stack
+    mov(12, edx);
+    mov(edx, [esp + 8]);
+    stdout.put("New eax value at the stack: ", edx, nl);
+
+    // Suppose we dont need the stack value of ecx anymore, lets skip it
+    // We do that my manually increasing esp by 4 bytes - 32 bits
+    add(4, esp);
+
+    // Lets restore eax and ebx
+    pop(ebx);
+    pop(eax);
+
+    stdout.put("Restored EAX: ", eax, nl);
+    stdout.put("Restored EBX: ", ebx, nl);
+end my_program;

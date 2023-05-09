@@ -1,0 +1,22 @@
+program my_program;
+#include ("stdlib.hhf")
+
+begin my_program;
+    // Lets allocate a byte array and initialize data
+    mem.alloc(@size(byte) * 10); // 10 elements
+
+    // EAX now stores the pointer, so we use ebx for index
+    for (mov(0, ebx); ebx < 10; inc(ebx)) do
+        mov(bl, (type byte [eax + ebx]));
+    endfor;
+
+    // Lets print some values
+    mov([eax], (type byte bl));
+    stdout.put("First value: ", bl, nl);
+
+    mov([eax + 2], (type byte bl));
+    stdout.put("Third value: ", bl, nl);
+
+    mov([eax + 7], (type byte bl));
+    stdout.put("Eighth value: ", bl, nl);
+end my_program;

@@ -1,0 +1,30 @@
+program my_program;
+#include ("stdlib.hhf")
+
+const length := 6;
+
+static arr: uns8[length] := [ 9, 0, 3, 2, 3, 6 ];
+
+begin my_program;
+
+    // Sort
+    for(mov(0, ebx); ebx < length; inc(ebx)) do
+        for(mov(0, ecx); ecx < length - 1; inc(ecx)) do
+            mov(arr[ecx], al);
+            mov(arr[ecx + 1], dl); // we use +1 because we are using a single byte unsigned integer, for a word it should be 2, double-word 4 and so on
+            if (al > dl) then
+                mov(dl, arr[ecx]);
+                mov(al, arr[ecx + 1]);
+            endif;
+        endfor;
+    endfor;
+
+    // Print
+    for(mov(0, ebx); ebx < length; inc(ebx)) do
+        mov(arr[ebx], cl);
+        stdout.put(cl, " ");
+    endfor;
+
+    stdout.put(nl);
+
+end my_program;

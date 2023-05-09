@@ -1,0 +1,20 @@
+program my_program;
+#include ("stdlib.hhf")
+
+begin my_program;
+    /*
+     * Boolean expressions always consider register as unsigned values,
+     * but we can use type coercion to force them to be read in any type we want.
+     * Type coercion can be used in variables too, and it does not do any conversion
+     * It simply assume those bits are actually from a different, which may lead to bugs etc.
+     */
+    mov(-1, eax);
+
+    if (eax < 0) then
+        stdout.put("EAX is negative (1)", nl);
+    endif;
+
+    if ((type int32 eax) < 0) then
+        stdout.put("EAX is negative (2)", nl);
+    endif;
+end my_program;

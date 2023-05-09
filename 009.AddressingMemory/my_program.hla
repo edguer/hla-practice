@@ -1,0 +1,18 @@
+program my_program;
+#include ("stdlib.hhf")
+
+static
+    test1:    int32 := 999;
+
+begin my_program;
+    // Loads test1 address, dereference and print value
+    mov(&test1, ebx);
+    mov([ebx], eax);
+    stdout.put("Value is: ")
+    stdout.puti32(eax);
+    stdout.put(nl);
+
+    // Should throw memory access violation
+    mov($1234, ebx);
+    mov([ebx], eax);
+end my_program;

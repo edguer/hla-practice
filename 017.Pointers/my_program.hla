@@ -1,0 +1,29 @@
+program my_program;
+#include ("stdlib.hhf")
+
+static b: byte := 0;
+          byte    1, 2, 4, 5, 6;
+
+const ptr := &b + 3;
+
+var dyn_ptr: pointer to byte;
+
+begin my_program;
+    // static allocation
+    mov(ptr, ebx); // load address to ebx
+    mov([ebx], eax); // deference ebx and copies the actual value to eax
+    stdout.put("Value from static pointer is ", al, " at address ", ptr, nl);
+
+    // now from alloc
+    mem.alloc(1024);
+    mov(eax, dyn_ptr); // pointer to the new memory block goes to eax
+
+    mov(dyn_ptr, ebx); // address to ebx
+    mov(ptr, ecx); // static pointer address to ecx
+    mov([ecx], edx); // copies ecx address value to edx
+    mov(edx, [ebx]); // copies edx value to ebx address (dyn_ptr)
+    mov([ebx], eax); // derefence ebx and copy the value
+    stdout.put("Value from dynamic pointer is ", al, " at address ", dyn_ptr, nl);
+
+    mem.free(dyn_ptr);
+end my_program;

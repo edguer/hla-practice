@@ -1,0 +1,30 @@
+program my_program;
+#include ("stdlib.hhf")
+
+static
+    i: int8; @nostorage; // @nostorage means the variable is a fake, won't hold allocate actual values, to refering to it returns the next static address, meaning next variable below
+       byte 4, 5, 6, 7; // variables with no symbols are only accessible by direct memory addressing
+    j: int16; @nostorage;
+       word 8, 9, 10, 11;
+
+begin my_program;
+    /*
+     * We use i variable to reach the tip of static section
+     * Then we use use offset to move to other variables
+     * Address offset is per byte basis, so it is not the same as an array indexing
+     */
+    stdout.put(
+        "i[0]=", i[0], nl,
+        "i[1]=", i[1], nl,
+        "i[2]=", i[2], nl,
+        "i[3]=", i[3], nl
+    );
+
+    // Indexing word-size variable requires offsetting by 2
+    stdout.put(
+        "j[0]=", j[0], nl,
+        "j[1]=", j[2], nl,
+        "j[2]=", j[4], nl,
+        "j[3]=", j[6], nl
+    );
+end my_program;

@@ -1,0 +1,31 @@
+program my_program;
+#include ("stdlib.hhf")
+
+begin my_program;
+    // HLA has its alloc system
+    // Allocates 4 bytes, address is located at EAX, we will push it to stack
+    mem.alloc(4);
+    push(eax);
+
+    // Same, except using size macro
+    mem.alloc(@size(uns32));
+    push(eax);
+
+    // To set value, we use indirect type + type coercion
+    mov([esp + 4], eax);
+    mov(1, (type uns32 [eax]));
+    
+    mov([esp], eax);
+    mov(2, (type uns32 [eax]));
+
+    // Lets get the objects
+    pop(eax);
+    mov([eax], ebx);
+    stdout.put("Second object value: ", ebx, nl);
+    mem.free(eax);
+    
+    pop(eax);
+    mov([eax], ebx);
+    stdout.put("First object value: ", ebx, nl);
+    mem.free(eax);
+end my_program;

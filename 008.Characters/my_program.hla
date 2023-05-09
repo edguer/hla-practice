@@ -1,0 +1,26 @@
+program my_program;
+#include ("stdlib.hhf")
+
+static
+    chr:           char;
+
+begin my_program;
+    stdout.put("Type a char: ");
+    stdin.getc();
+
+    //to upper - 5th bit should be 0
+    // $5f == %0101_1111, meaning a 'and' will make the 7th and 5th bits 0
+    and($5f, al);
+
+    mov(al, chr);
+    stdout.put("Upper case char is: ", chr, nl);
+
+    stdout.put("Type a line, finish with a line-break (ENTER): ");
+    stdin.flushInput();
+
+    repeat
+        stdin.getc();
+        stdout.putc(al);
+        stdout.put("=$", al, nl);
+    until(stdin.eoln());
+end my_program;

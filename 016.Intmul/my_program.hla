@@ -1,0 +1,18 @@
+program my_program;
+#include ("stdlib.hhf")
+
+begin my_program;
+    try
+        // within 32 bits bound, wont raise exception
+        mov(10, ebx);
+        intmul(10, ebx, eax);
+        into();
+
+        // will raise exception
+        mov(294_967_296, ebx);
+        intmul(294_967_296, ebx, eax);
+        into();
+    exception (ex.IntoInstr)
+     stdout.put("Into exception",nl);
+    endtry;
+end my_program;

@@ -1,0 +1,12 @@
+program my_program;
+#include ("stdlib.hhf")
+
+static
+    i32:        int32 := 15;
+
+
+begin my_program;
+    stdout.put("int32 representation: ", i32, nl);
+    mov(i32, eax);
+    stdout.put("hex representation: ", eax, nl);
+end my_program;

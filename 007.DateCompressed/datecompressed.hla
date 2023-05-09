@@ -1,0 +1,83 @@
+program my_program;
+#include ("stdlib.hhf")
+
+static
+    day:           uns8;
+    month:         uns8;
+    year:          uns8;
+    packed_date:          word;
+
+begin my_program;
+    // date layout
+    // bits:
+    // mmmm ddddd yyyyyyy = 16 bits
+    // conclusion: packing bitfields is usually inefficient, since it requires more computaiton, although it saves space
+
+    stdout.put("Enter month: ");
+    stdin.get(month);
+    stdout.put(nl);
+
+    stdout.put("Enter day: ");
+    stdin.get(day);
+    stdout.put(nl);
+
+    stdout.put("Enter year: ");
+    stdin.get(year);
+    stdout.put(nl);
+
+    // zero AX, say 0 is empty data, and M/D/Y is filled data, AX would be:
+    // 0000 0000 0000 0000 -> 16 bits
+    mov(0, ax);
+    stdout.put("1. AX,", ax, nl);
+    // Now we set month to AX lower bits, say
+    // NOTICE: we assume only 4 bits are provided, and the rest bits, on the left, will be 0
+    // this is assumed day and year too
+    // 0000 0000 0000 MMMM
+    mov(month, al);
+    stdout.put("2. AX,", ax, nl);
+    // Now we move it 5 positions left
+    // 0000 000M MMM0 0000
+    shl(5, ax);
+    stdout.put("3. AX,", ax, nl);
+    // Intersect day with the lower bits, will be
+    // 0000 000M MMMD DDDD
+    or(day, al);
+    stdout.put("4. AX,", ax, nl);
+    // The  shift left 7 to open space for year
+    // MMMM DDDD D000 0000
+    shl(7, ax);
+    stdout.put("5. AX,", ax, nl);
+    // Intersects with year
+    // MMMM DDDD DYYY YYYY
+    or(year, al);
+    stdout.put("6. AX,", ax, nl);
+
+    mov(ax, packed_date);
+    stdout.put("Packed data = $", packed_date, nl );
+
+    // unpacking
+    mov(packed_date, ax);
+    // Retrieving the year, so we execute an and to mask the last 7 bits corresponding to year
+    // $7f == %0111_1111
+    // Say the year is %0000_0001, then AX will be set to $0001, %0000_0000_0000_0001
+    and($7f, ax);
+    mov(al, year);
+
+    // Retrieving the day, we shift right 7 positions
+    // MMMM DDDD DYYY YYYY -> 0000 000M MMMD DDDD
+    // and then put the lower bits to day variable
+    mov(packed_date, ax);
+    shr(7, ax);
+    and(%1_1111, al); // mask out
+    mov(al, day);
+
+    // Month, we use rotate-left (rol), so month bits go to AL:
+    // DDDD DYYY YYYY MMMM
+    mov(packed_date, ax);
+    rol(4, ax);
+    and(%1111, al); // mask iyt
+    mov(al, month);
+
+    stdout.put( "The date is ", month, "/", day, "/", year, nl );
+
+end my_program;

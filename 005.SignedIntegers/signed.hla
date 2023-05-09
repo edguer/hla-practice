@@ -1,0 +1,69 @@
+program my_program;
+#include ("stdlib.hhf")
+
+static
+    pos_val:        int8;
+    neg_val:        int8;
+    i16:            int16;
+
+
+begin my_program;
+    stdout.put("type a int value: ");
+    stdin.get(pos_val);
+    stdout.puth8(pos_val);
+    
+    mov(pos_val, al);
+    neg(al);
+    mov(al, neg_val);
+    
+    stdout.put(nl, "value: ");
+    stdout.put(neg_val, nl);
+    stdout.puth8(neg_val);
+    stdout.put(nl);
+
+    // sign extend pos_val to a word
+    mov(pos_val, al);
+    cbw(); // high order bits are set to 1
+    mov(ax, i16);
+
+    stdout.put(nl, "value 16 bits: ");
+    stdout.put(i16, nl);
+    stdout.puth16(i16);
+    stdout.put(nl);
+
+    mov(neg_val, al);
+    cbw(); // high order bits are set to 0
+    mov(ax, i16);
+
+    stdout.put(nl, "negative value 16 bits: ");
+    stdout.put(i16, nl);
+    stdout.puth16(i16);
+    stdout.put(nl);
+
+    // sign extension with movsx
+    movsx(neg_val, ax);
+    mov(ax, i16);
+
+    stdout.put(nl, "negative value 16 bits with movsx: ");
+    stdout.put(i16, nl);
+    stdout.puth16(i16);
+    stdout.put(nl);
+
+    // sign extension with movsx on positive value
+    movsx(pos_val, ax);
+    mov(ax, i16);
+
+    stdout.put(nl, "value 16 bits with movsx: ");
+    stdout.put(i16, nl);
+    stdout.puth16(i16);
+    stdout.put(nl);
+
+    // zero extend movzx
+    movzx(neg_val, ax); // negative values will become some random positive
+    mov(ax, i16);
+
+    stdout.put(nl, "negative value 16 bits zero extended: ");
+    stdout.put(i16, nl);
+    stdout.puth16(i16);
+    stdout.put(nl);
+end my_program;

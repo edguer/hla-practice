@@ -1,0 +1,43 @@
+program my_program;
+#include ("stdlib.hhf")
+
+static cnt: uns8;
+static ptr: pointer to byte;
+
+begin my_program;
+    // allocate and store pointer to new memory location
+    mem.alloc(256);
+    mov(eax, ptr);
+
+    stdout.put("Write a line: ");
+    stdin.flushInput();
+
+    // set counter to 0 and copy pointer address to ebx
+    mov(0, cnt);
+    mov(ptr, ebx);
+
+    // for each character read, copy it to the current ebx address location
+    // increment counter and ebx location
+    repeat
+        stdin.getc();
+        mov(al, [ebx]);
+        inc(cnt);
+        inc(ebx);
+    until (stdin.eoln());
+
+    stdout.put(nl);
+
+    // load pointer to ebx, load counter to cl and decrement it to use as indexer
+    // each time, read the ebx address and copy it to eax, print it and increment
+    // ebx address location
+    mov(ptr, ebx);
+    for(mov(cnt, cl); cl > 0; dec(cl)) do
+        mov([ebx], eax);
+        stdout.putc(al);
+        inc(ebx);
+    endfor;
+
+    stdout.put(nl);
+
+    mem.free(ptr);
+end my_program;

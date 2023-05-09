@@ -1,0 +1,14 @@
+program my_program;
+#include ("stdlib.hhf")
+
+static
+    b:byte; @nostorage;
+      byte 5,4,2,6,7;
+
+begin my_program;
+    // to get b's address, we use lea, which loads its address to a register
+    lea(eax, b);
+    for (mov(0, ebx); ebx < 5; inc(ebx)) do
+        stdout.put("Item ", (type byte [eax + ebx]), nl);
+    endfor;
+end my_program;

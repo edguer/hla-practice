@@ -1,0 +1,6 @@
+program hello_world;
+#include ("stdlib.hhf")
+
+begin hello_world;
+    stdout.put("Hello, World!" nl);
+end hello_world;

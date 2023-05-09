@@ -1,0 +1,18 @@
+program my_program;
+#include ("stdlib.hhf")
+
+static my_str: char; @nostorage;
+               byte  "This is a zero-terminated string", 0; // len is 20
+
+begin my_program;
+    mov(&my_str, ebx);
+    mov(0, eax);
+
+    // although zero-terminated strings are simple, lightweight and widepread, they are not efficient because of this simple operation
+    // we need to count each character until reaching 0
+    while ((type byte [ebx + eax]) <> 0) do
+        inc(eax);
+    endwhile;
+
+    stdout.put("Length is ", eax, nl);
+end my_program;
