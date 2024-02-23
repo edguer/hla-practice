@@ -1,0 +1,34 @@
+program my_program;
+#include ("stdlib.hhf")
+
+const length := 6;
+
+static
+    arr:       int32[4,4] :=
+    [
+         0,  1,  2,  3,
+         4,  5,  6,  7,
+         8,  9, 10, 11,
+        12, 13, 14, 15
+    ];
+    col:       int32      := 3;
+    row:       int32      := 3;
+
+begin my_program;
+    // Row-major approach
+    // Formula: add = base_address + (row_index * row_size + col_index) * type_size
+    stdout.put("Type row and column:", nl);
+    stdout.put("Row: ");
+    stdin.get(row);
+    stdout.put("Column: ");
+    stdin.get(col);
+
+    // Accessing [row,col]
+    mov(row, ebx); // row index
+    shl(2, ebx); // row size is 4, so shifting left 2 times multiplies it by 4
+    add(col, ebx); // Add row index
+    mov(arr[ ebx * 4 ], ecx); // multiply and assign value to ecx
+
+    stdout.put("[", row, ",", col, "] -> ");
+    stdout.put(ecx, nl);
+end my_program;

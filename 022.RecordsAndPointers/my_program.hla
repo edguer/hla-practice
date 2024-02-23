@@ -1,0 +1,40 @@
+program my_program;
+#include ("stdlib.hhf")
+
+type
+    rec: record
+        align(4); // Align record to a multiple of 4 memory address for performance reasons
+        a: char;
+        align(4); // Aligns b field to a multiple of 4 memory address
+        b: int16;
+    endrecord;
+
+static
+    rec1: rec := rec:[ 'a', 2 ];
+    rec1_ptr: pointer to rec1 := &rec1;
+
+begin my_program;
+    // Getting a and b fields through offset
+    mov(rec1_ptr, ebx); // Load address to EBX
+    
+    mov([ebx], al); // Derefence address and write 
+    stdout.put("a: ");
+    stdout.putc(al);
+    stdout.put(nl);
+
+    mov([ebx + 4], ax); // Derefence with 4 bytes offset to get b field
+    stdout.put("b: ");
+    stdout.put(ax);
+    stdout.put(nl);
+
+    // Getting a and b using HLA syntax
+    mov((type rec [ebx]).a, al);
+    stdout.put("a: ");
+    stdout.putc(al);
+    stdout.put(nl);
+
+    mov((type rec [ebx]).b, ax);
+    stdout.put("b: ");
+    stdout.put(ax);
+    stdout.put(nl);
+end my_program;
